@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tienda Kujo</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9">
+  <link href="assets/img/Inicio de Sesión.png" rel="icon" ype="image/x-icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/css/quill.snow.css" rel="stylesheet">
+  <link href="assets/css/quill.bubble.css" rel="stylesheet">
+  <link href="assets/css/remixicon.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/vanillatoasts.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+<body>
+  <app-root></app-root>
+  <script src="assets/js/apexcharts.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/chart.min.js"></script>
+  <script src="assets/js/echarts.min.js"></script>
+  <script src="assets/js/openTabs.js"></script>
+  <script src="assets/js/quill.min.js"></script>
+  <script src="assets/js/tinymce.min.js"></script>
+  <script src="assets/js/funcionestoast.js"></script>
+  <script src="assets/js/vanillatoasts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+  <script>
+
+
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form ...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  // ... and fix the Previous/Next buttons:
+  if (n == 0 || n == 2) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").innerHTML = "Aceptar";
+  } else {
+    document.getElementById("nextBtn").innerHTML = "Siguiente";
+  }
+  // ... and run a function that displays the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form... :
+  if (currentTab >= x.length) {
+    //...the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+function validateForm() {
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+  for (i = 0; i < y.length; i++) {
+    if (y[i].value == "") {
+      y[i].className += " invalid";
+      valid = false;
+    }
+  }
+  if (valid) {
+    document.getElementsByClassName("step")[currentTab].className += " finish";
+  }
+  return valid;
+}
+
+function fixStepIndicator(n) {
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  x[n].className += " active";
+}
+
+
+
+setTimeout(function() {
+    document.getElementById("success-message").style.display = "block";
+    document.getElementById("redirect-message").style.display = "block";
+
+    // Contador de 10 segundos
+    var countdown = 10;
+    var countdownElement = document.getElementById("countdown");
+
+    var countdownInterval = setInterval(function() {
+      countdown--;
+      countdownElement.textContent = countdown;
+
+      // Redirigir al login después de 10 segundos
+      if (countdown <= 0) {
+        clearInterval(countdownInterval);
+        // Aquí puedes redirigir al usuario a la página de login
+        // Ejemplo: window.location.href = "ruta_del_login.html";
+      }
+    }, 1000);
+  }, 2000); // Mostrar después de 2 segundos
+  </script>
+</body>
+
+</html>

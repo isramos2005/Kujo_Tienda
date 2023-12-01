@@ -1,0 +1,340 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Productos</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/dashboard">Inicio</a></li>
+        <li class="breadcrumb-item active">Productos</li>
+        <li class="breadcrumb-item active">Listado</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header" style="padding: 0; position: relative">
+            <div class="banner" style="
+                  background-image: url('/assets/img/BANNERS-VR-FINAL/PRODUCTOS.png');
+                  border-top-left-radius: 10px;
+                  border-top-right-radius: 10px;
+                  background-size: contain;
+                  background-position: center;
+                  height: 0;
+                  padding-bottom: 23%;
+                "></div>
+            <div class="overlay" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0"></div>
+          </div>
+          <div class="row ms-1 mt-3 mb-2 col-12">
+
+
+            <button (click)="openCreateModal()" class=" ov-btn-grow-primary col-12 col-md-2 col-sm-12 mt-2 "
+              style="height: 2.4rem;">
+              <i class="fas fa-plus-circle mr-1"></i> <label for="" class="ms-2">Nuevo</label>
+            </button>
+
+            <div class="search-bar col-12 col-md-6 col-sm-12 mt-2">
+              <input type="text" class="form-control" placeholder="Buscar..." [(ngModel)]="filtro" />
+            </div>
+
+            <div class="col-12 col-md-4 col-sm-12 mt-2">
+              <div class="input-group" style="height: 2.4rem;">
+                <label style="margin-top: 0.5rem; margin-right: 0.5rem; font-weight: bold  ;">Registros por
+                  página:</label>
+                <span class="input-group-text"><i class="bi bi-filter-square-fill"
+                    style="color: blueviolet;"></i></span>
+                <select id="pageSize" class="form-select" [(ngModel)]="selectedPageSize">
+                  <option *ngFor="let pageSize of pageSizeOptions" [value]="pageSize">{{ pageSize }}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="row g-3" style="margin-left: 10px; margin-right: 10px; margin-top: 20px">
+            <div *ngIf="filtrarProductos().length === 0" style="text-align: center;">
+              <img src="../../../assets/img/datanotfound.png" alt="Datos no encontrados"
+                style="width: 100px; height: 100px;" />
+              <p>No se encontraron productos.</p>
+            </div>
+            <div class="col-md-4 hover-effect"
+              *ngFor="let item of filtrarProductos()| paginate : { itemsPerPage: selectedPageSize, currentPage: p }">
+              <div class="card h-100 mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <span [ngClass]="{'truncate-text': item.Nombre.length > 15}">
+                      {{ item.Nombre }}
+                    </span> ✦
+
+                    <span><b> Código: {{ item.Id }} </b></span>
+                  </h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-image-container">
+                      <img *ngIf="item.Imagen" [src]="item.Imagen" alt="Imagen del producto" class="card-image" />
+                    </div>
+                    <div class="ps-3">
+                      <span>
+                        Precio: <b>{{ item.Precio + " HNL" }}</b>
+                      </span>
+                      <br />
+                      <span>
+                        Stock: <b>{{ item.Existencias + " Unidades" }}</b>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer" style="text-align: center; background-color: rgb(255, 255, 255);">
+                  <button (click)="onUpdate(item)" *ngIf="!SoloIcono" class="ov-btn-grow-u btn-sm" style="margin-left: 10px; height: 2.5rem;">
+                    <i class="bi bi-pen-fill"></i> Editar
+                  </button>
+                  <button (click)="onDelete(item.Id)" *ngIf="!SoloIcono" class="ov-btn-grow-d btn-sm" style="margin-left: 10px; height: 2.5rem;">
+                    <i class="bi bi-trash-fill"></i> Eliminar
+                  </button>
+                
+                  <button (click)="onUpdate(item)" *ngIf="SoloIcono" class="ov-btn-grow-u btn-sm" style="margin-left: 10px; height: 2.5rem;">
+                    <i class="bi bi-pen-fill"></i>
+                  </button>
+                  <button (click)="onDelete(item.Id)" *ngIf="SoloIcono" class="ov-btn-grow-d btn-sm" style="margin-left: 10px; height: 2.5rem;">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="pagination d-flex justify-content-center mt-3">
+            <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"
+              firstLabel="Primera" lastLabel="Última" screenReaderPaginationLabel="Paginación"
+              screenReaderPageLabel="Página" screenReaderCurrentLabel="Página actual">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<!-- MODAL CREATE -->
+
+<div [ngClass]="{'slide-in': showModal}" class="modal-shadow modal" id="modalCreate">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title text-dark"><b>Nuevo Producto</b></h5>
+      </div>
+      <div class="modal-body" style="text-align: center">
+
+        <div class="row" style="text-align: center; margin-top: 20px">
+          <div class="col-md-4">
+            <div class="d-flex justify-content-center align-items-center point">
+              <input id="uploadBtn" type="file" class="point" style="display: none" accept="image/*"
+                (change)="handleImageUpload($event)" />
+              <div class="position-relative">
+                <label for="uploadBtn" class="img-circle-medium point"
+                  [style.background-image]="'url(' + imageUrl + ')'">
+                  <span *ngIf="!imageUrl" class="mt-5 text-center d-flex align-items-center justify-content-center">
+                    <i>
+                      <img src="../../assets/img/foto.png" width="60px" class="mt-4 point" alt="" /></i>
+                  </span>
+                  <span *ngIf="!imageUrl" class="text-center d-flex align-items-center justify-content-center">
+                    Añadir Imagen
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mt-2">
+              <img *ngIf="imageUrl" src="../../assets/img/fotoeliminar.png" width="50px" alt="" class="point"
+                (click)="deleteImage()" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Producto_Create_Requerido"></i>
+              <span>Producto:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="createProducto.Nombre" type="text" class="form-control" id="Nombre"
+                  placeholder="Producto" (input)="clearProductoCreateError()" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Precio_Create_Requerido"></i>
+              <span>Precio:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="createProducto.Precio" type="number" class="form-control" id="Precio"
+                  placeholder="Producto" (input)="clearProductoCreateError()" pattern="[0-9]+" min="1" />
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Stock_Create_Requerido"></i>
+              <span>Stock:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="createProducto.Existencias" type="number" class="form-control" id="Nombre"
+                  placeholder="Stock" (input)="clearStockCreateError()" pattern="[0-9]+" min="1" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Total_Create_Requerido"></i>
+              <span>Total:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="createProducto.Total" type="number" class="form-control" id="Total"
+                  placeholder="Producto" (input)="clearTotalCreateError()" pattern="[0-9]+" min="1" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="confirmarCreate()" type="button" class="ov-btn-grow-primary"
+          style="margin-left: 10px; height: 2.5rem;">
+          <i class="bi bi-check-circle-fill "></i> Agregar
+        </button>
+        <button (click)="closeCreateModal()" type="button" class="ov-btn-grow-d"
+          style="margin-left: 10px; height: 2.5rem;">
+          <i class="bi bi-reply-fill"></i> Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /MODAL CREATE -->
+
+<!-- MODAL UPDATE -->
+<div [ngClass]="{'slide-in': showModalU}" class="modal-shadow modal" id="modalUpdate" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title text-dark"><b>Edición</b></h5>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body" style="text-align: center">
+        <div class="row" style="text-align: center; margin-top: 20px">
+          <div class="col-md-4">
+            <div class="d-flex justify-content-center align-items-center point">
+              <input id="uploadBtn" type="file" class="point" style="display: none" accept="image/*"
+                (change)="handleImageUpload($event)" />
+              <div class="position-relative">
+                <label for="uploadBtn" class="img-circle-medium point"
+                  [style.background-image]="'url(' + updateProducto.Imagen + ')'">
+                  <span *ngIf="!updateProducto.Imagen"
+                    class="mt-5 text-center d-flex align-items-center justify-content-center">
+                    <i>
+                      <img src="../../assets/img/foto.png" width="60px" class="mt-4 point" alt="" /></i>
+                  </span>
+                  <span *ngIf="!updateProducto.Imagen"
+                    class="text-center d-flex align-items-center justify-content-center">
+                    Añadir Imagen
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mt-2">
+              <i *ngIf="updateProducto.Imagen" class="point" (click)="deleteImage()">
+                <img src="../../assets/img/fotoeliminar.png" width="50px" alt="" />
+              </i>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Producto_Update_Requerido"></i>
+              <span>Producto:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="updateProducto.Nombre" type="text" class="form-control" id="Nombre_Edit"
+                  placeholder="Producto" (input)="clearProductoUpdateError()" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Precio_Update_Requerido"></i>
+              <span>Precio:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="updateProducto.Precio" id="Precio_Edit" placeholder="Precio" type="number"
+                  class="form-control" id="Precio" placeholder="Precio" (input)="clearProductoCreateError()"
+                  pattern="[0-9]+" min="1" (input)="clearPrecioUpdateError()" />
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Producto_Update_Requerido"></i>
+              <span>Stock:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="updateProducto.Existencias" type="text" class="form-control" id="Stock_Edit"
+                  placeholder="Stock" (input)="clearStockUpdateError()" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <i class="bi bi-exclamation-circle-fill" style="color: orange; margin-right: 10px"
+                *ngIf="Total_Update_Requerido"></i>
+              <span>Total:</span>
+              <div class="input-group" style="height: 3rem">
+                <span class="input-group-text"><i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i></span>
+                <input [(ngModel)]="updateProducto.Total" type="text" class="form-control" id="Total_Edit"
+                  placeholder="Total" (input)="clearTotalUpdateError()" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="confirmUpdate()" type="button" class="ov-btn-grow-primary"
+          style="margin-left: 10px; height: 2.5rem;">
+          <i class="bi bi-check-circle-fill "></i> Actualizar
+        </button>
+        <button (click)="closeUpdateModal()" type="button" class="ov-btn-grow-d"
+          style="margin-left: 10px; height: 2.5rem;">
+          <i class="bi bi-reply-fill"></i> Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/MODAL UPDATE -->
+
+<!-- MODAL DELETE -->
+<div [ngClass]="{'slide-in': showModalD}" class="modal-shadow modal" id="modalDelete" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title text-light"><b>Confirmar</b></h5>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <h5 style="text-align: center; margin-top: 20px">
+          <b>¿Desea eliminar este registro?</b>
+        </h5>
+        <img src="../../../assets/img/modal_borrar.png"
+          style=" width: 100px; height: 100px; margin-right: 30px; text-align: center;" alt="Warning Sign" />
+      </div>
+      <div class="modal-footer">
+        <button (click)="confirmDelete()" type="button" class="ov-btn-grow-in"
+          style="margin-left: 10px; height: 2.5rem;">
+          <i class="bi bi-check-circle-fill "></i> Confirmar
+        </button>
+        <button (click)="closeDeleteModal()" type="button" class="ov-btn-grow-d"
+          style="margin-left: 10px; height: 2.5rem;">
+          <i class="bi bi-reply-fill"></i> Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/MODAL DELETE -->

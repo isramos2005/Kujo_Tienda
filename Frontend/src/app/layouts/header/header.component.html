@@ -1,0 +1,26 @@
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between" ><img src="../../../assets/img/Logo Dashboard.png" (click)="DashBoard()"  style="margin-left: 20px;width: 4cm; margin-top: 5px;" alt=""> <span class="d-none d-lg-block"></span>  <i (click)="sidebarToggle()" class="bi bi-list toggle-sidebar-btn"></i></div>
+   
+    <nav class="header-nav ms-auto">
+       <ul class="d-flex align-items-center">
+          <li class="nav-item d-block d-lg-none"> <a class="nav-link nav-icon search-bar-toggle " href="#"> <i class="bi bi-search"></i> </a></li>
+          
+          
+          <li class="nav-item dropdown pe-3">
+             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"> <img [src]="usua_Img" alt="Profile" class="rounded-circle"> <span class="d-none d-md-block dropdown-toggle ps-2">{{usua_Usuario}}</span> </a>
+             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <li class="dropdown-header">
+             <a class="nav-link nav-profile d-flex align-items-center" style="margin-left: 30%;" href="#" data-bs-toggle="dropdown"> <img [src]="usua_Img" alt="Profile" class="rounded-circle"></a>
+
+                   <h6>{{usua_Usuario}}</h6>
+                   <span>{{nombreEmpleado}}</span>
+                </li>
+               <li>
+                   <hr class="dropdown-divider">
+                </li>
+                <li> <a class="dropdown-item d-flex align-items-center"  (click)="Log_Out()"><i> <img src="../../../assets/img/salida-de-emergencia.png" width="40px" style="margin-right: 5px;margin-left: -5px;" alt=""></i><span>Cerrar Sesión</span> </a></li>
+             </ul>
+          </li>
+       </ul>
+    </nav>
+ </header>

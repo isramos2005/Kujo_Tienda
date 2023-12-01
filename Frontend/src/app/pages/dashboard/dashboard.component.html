@@ -1,0 +1,71 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/dashboard">Inicio</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <!--header-->
+          <div class="card-header" style="padding: 0; position: relative">
+            <div
+              class="banner"
+              style="
+                background-image: url('/assets/img/BANNERS-VR-FINAL/DASHBOARD.png');
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                background-size: cover;
+                background-position: top;
+                background-repeat: no-repeat;
+                height: 0;
+                padding-bottom: 25%;
+              "
+            ></div>
+            <div
+              class="overlay"
+              style="position: absolute; top: 0; bottom: 0; left: 0; right: 0"
+            ></div>
+          </div>
+          <!--body-->
+          <div class="card-body" style="margin-top: 20px">
+            <div class="d-flex justify-content-center">
+              <div class="col-md-8">
+                <!-- Agrega el título -->
+                <h3 class="text-center mb-4">Gráfica de Facturas por Tipo de Pago</h3>
+          
+                <div class="card-img-overlay-mod col-12" style="position: relative; height: 400px; width: 100%;">
+                  <div class="badges-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <ngx-charts-pie-chart
+                      [results]="data"
+                      [doughnut]="true"
+                      [labels]="true"
+                      [explodeSlices]="false"
+                      [view]="[600, 400]"
+                    ></ngx-charts-pie-chart>
+                  </div>
+                </div>
+          
+                <!-- Agrega los textos de porcentajes -->
+                <div class="text-center mt-2">
+                  <p>Porcentaje de Facturas Contado: {{ porcentajeContado.toFixed(2) }}%</p>
+                  <p>Porcentaje de Facturas Crédito: {{ porcentajeCredito.toFixed(2) }}%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          
+                                           
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,339 @@
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Facturación</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/dashboard">Inicio</a></li>
+                <li class="breadcrumb-item active"><a routerLink="/Facturacion/Listado">Facturación</a></li>
+                <li class="breadcrumb-item">Crear</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header" style="padding: 0; position: relative">
+                        <div class="banner" style="
+                  background-image: url('/assets/img/BANNERS-VR-FINAL/FACTURACION NUEVA FACTURA.png');
+                  border-top-left-radius: 10px;
+                  border-top-right-radius: 10px;
+                  background-size: contain;
+                  background-position: center;
+                  height: 0;
+                  padding-bottom: 23%;"></div>
+                        <div class="overlay" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0"></div>
+                    </div>
+                    <div class="card-body bg-light">
+                        <div class="row mt-3">
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    <div class="card-title mb-0 mt-0">
+                                        <img style="margin-right: 10px; width: 64px; height: 64px;"
+                                            src="assets/img/TICKETS-VENTA-IMGS/REGISTRO-CLIE.png" />
+                                        <b>Registro del cliente</b>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row col-12">
+
+                                        <div class="col-12 mb-3 mt-2">
+                                            <div class="col-12 col-md-6 col-sm-12">
+
+                                                <b>Ya existe este cliente? Buscalo en la lista:</b>
+
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="bi bi-person-fill"
+                                                            style="color: rgb(43, 137, 226)"></i>
+                                                    </span>
+                                                    <select class="form-select" (ngModelChange)="clientebyselect()"
+                                                        [(ngModel)]="IdCliente">
+                                                        <option value="0">Selecciona una opción</option>
+                                                        <option *ngFor="let option of clientes" [value]="option.Id">{{
+                                                            option.Nombre }}</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-12 col-md-12 col-sm-12mt-2">
+                                            <i *ngIf="NombresRequerido" class="bi bi-exclamation-circle-fill"
+                                                style="color: orange; margin-right: 10px"></i>
+                                            <span>Nombres:</span>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="bi bi-person-fill" style="color: rgb(43, 137, 226)"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="Nombres"
+                                                    [(ngModel)]="ClienteInformacion.Nombre" placeholder="Nombres" />
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12 col-md-6 col-sm-12 mt-3">
+                                            <i *ngIf="RTNRequerido" class="bi bi-exclamation-circle-fill"
+                                                style="color: orange; margin-right: 10px"></i>
+                                            <span>RTN:</span>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="bi bi-credit-card-2-back-fill"
+                                                        style="color: rgb(43, 137, 226)"></i>
+                                                </span>
+                                                <input type="text" [(ngModel)]="ClienteInformacion.RTN"
+                                                    class="form-control" id="RTN" placeholder="RTN" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6 col-sm-12 mt-3">
+                                            <i *ngIf="DireccionRequerido" class="bi bi-exclamation-circle-fill"
+                                                style="color: orange; margin-right: 10px"></i>
+                                            <span>Dirección:</span>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="bi bi-geo-fill" style="color: rgb(43, 137, 226)"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="Direccion"
+                                                    [(ngModel)]="ClienteInformacion.Direccion"
+                                                    placeholder="Direccion" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    <div class="card-title mb-0 mt-0">
+                                        <img style="margin-right: 10px; width: 64px; height: 64px;"
+                                            src="assets/img/compras.png" />
+                                        <b>Selección de Productos</b>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row col-lg-12 mb-3">
+                                        <div class="col-12 mt-2">
+                                            <div class="row">
+                                                <div class="row ms-1 mt-3 mb-2 col-12">
+
+                                                    <div class="search-bar col-12 col-md-8 col-sm-12  mt-2">
+                                                        <input type="text" class="form-control" placeholder="Buscar..."
+                                                            [(ngModel)]="filtro" />
+                                                    </div>
+                                                    <div class="col-12 col-md-4 col-sm-6 mt-2">
+                                                        <div class="input-group">
+                                                            <label
+                                                                style="margin-top: 0.5rem; margin-right: 0.5rem; font-weight: bold  ;">Registros
+                                                                por página:</label>
+                                                            <span class="input-group-text"><i
+                                                                    class="bi bi-filter-square-fill"
+                                                                    style="color: blueviolet;"></i></span>
+                                                            <select id="pageSize" class="form-select"
+                                                                [(ngModel)]="selectedPageSize">
+                                                                <option *ngFor="let pageSize of pageSizeOptions"
+                                                                    [value]="pageSize">{{ pageSize }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="search-bar col-12 col-md-6 col-sm-6 mt-3">
+                                                        <label for="">Cantidad</label>
+
+                                                        <input type="number" class="form-control"
+                                                            [(ngModel)]="Cantidad" />
+                                                    </div>
+                                                    <button class="ov-btn-grow-primary col-12 col-md-6 col-sm-12"
+                                                        (click)="agregarProductoAFactura()"
+                                                        style="height: 2.3rem; margin-left: 0; margin-top: 2.5rem;">
+                                                        <i class="fas fa-plus-circle mr-1"></i>
+                                                        Agregar Producto a Factura
+                                                    </button>
+                                                    <div class="search-bar col-12 col-md-4 col-sm-6 mt-4">
+                                                        <label for="">ISV</label>
+                                                        <input type="text" class="form-control" readonly
+                                                            value="{{ ISV }} HNL" />
+                                                    </div>
+                                                    <div class="search-bar col-12 col-md-4 col-sm-6 mt-4">
+                                                        <label for="">Subtotal</label>
+                                                        <input type="text" class="form-control" readonly
+                                                            value="{{ Subtotal }} HNL" />
+                                                    </div>
+                                                    <div class="search-bar col-12 col-md-4 col-sm-6  mt-4">
+                                                        <label for="">Total</label>
+                                                        <input type="text" class="form-control" readonly
+                                                            value="{{ Total }} HNL">
+                                                    </div>
+
+
+
+                                                </div>
+                                                <div class="row g-3"
+                                                    style="margin-left: 10px; margin-right: 10px; margin-top: 20px">
+                                                    <div *ngIf="filtrarProductos().length === 0"
+                                                        style="text-align: center;">
+                                                        <img src="../../../assets/img/datanotfound.png"
+                                                            alt="Datos no encontrados"
+                                                            style="width: 100px; height: 100px;" />
+                                                        <p>No se encontraron productos.</p>
+                                                    </div>
+                                                    <div class="col-md-4 hover-effect"
+                                                        *ngFor="let item of filtrarProductos()| paginate : { itemsPerPage: selectedPageSize, currentPage: p }">
+                                                        <div class="card h-100 mb-3">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">
+                                                                    <span
+                                                                        [ngClass]="{'truncate-text': item.Nombre.length > 15}">
+                                                                        {{ item.Nombre }}
+                                                                    </span> ✦
+
+                                                                    <span><b> Código: {{ item.Id }} </b></span>
+                                                                </h5>
+
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="card-image-container">
+                                                                        <img *ngIf="item.Imagen" [src]="item.Imagen"
+                                                                            alt="Imagen del producto"
+                                                                            class="card-image" />
+                                                                    </div>
+                                                                    <div class="ps-3">
+                                                                        <span>
+                                                                            Precio: <b>{{ item.Precio + " HNL" }}</b>
+                                                                        </span>
+                                                                        <br />
+                                                                        <span>
+                                                                            Stock: <b>{{ item.Existencias + " Unidades"
+                                                                                }}</b>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-footer"
+                                                                style=" text-align: center; background-color: rgb(255, 255, 255);">
+
+                                                                <button (click)="seleccionarProducto(item)"
+                                                                    class="seleccionar-btn-grow"
+                                                                    style="margin-left: 10px; height: 2.5rem;">
+                                                                    <i
+                                                                        [ngClass]="{'bi bi-check-square-fill': estaSeleccionado(item), 'bi bi-square-fill': !estaSeleccionado(item)}"></i>
+                                                                    {{ estaSeleccionado(item) ? 'Deseleccionar' :
+                                                                    'Seleccionar' }}
+                                                                </button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pagination d-flex justify-content-center mt-3">
+                                                    <pagination-controls (pageChange)="p = $event"
+                                                        previousLabel="Anterior" nextLabel="Siguiente"
+                                                        firstLabel="Primera" lastLabel="Última"
+                                                        screenReaderPaginationLabel="Paginación"
+                                                        screenReaderPageLabel="Página"
+                                                        screenReaderCurrentLabel="Página actual">
+                                                    </pagination-controls>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <table class="table col-12 table-borderless mt-3">
+                                            <thead style="background-color: #7d5fd0; border: none;" class="text-light">
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th> </th>
+                                                    <th>Cantidad</th>
+                                                    <th>Precio Unitario</th>
+                                                    <th>Total</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let producto of productosEnTabla">
+                                                    <td>{{ producto.Producto }}</td>
+                                                    <td style="align-items: center; align-content: center;">
+                                                        <img [src]="producto.Imagen" alt="" [style.max-height.px]="50">
+                                                    </td>
+
+                                                    <td>{{ producto.Cantidad }}</td>
+                                                    <td>{{ producto.PrecioUnitario | currency:'HNL':'symbol':'1.2-2' }}
+                                                    </td>
+                                                    <td>{{ producto.Total | currency:'HNL':'symbol':'1.2-2' }}</td>
+                                                    <td>
+                                                        <button (click)="eliminarProductoDeTabla(producto)"
+                                                            class="ov-btn-grow-d"
+                                                            style="margin-left: 10px; height: 2.5rem;">
+                                                            <i class="bi bi-trash-fill"></i> Eliminar
+                                                        </button>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    <div class="card-title mb-0 mt-0">
+                                        <img style="margin-right: 10px; width: 64px; height: 64px;"
+                                            src="assets/img/TICKETS-VENTA-IMGS/CONFIRMAR-PAGO.png" />
+                                        <b>Confirmación de pago</b>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row col-12 mt-4">
+
+                                        <div class="col-12 col-md-6 col-sm-12">
+                                            <i class="bi bi-exclamation-circle-fill mr-3" style="color: orange;"
+                                                *ngIf="PagoRequerido"></i>
+                                            <label for="floatingSelectRegion" class="ms-1 form-label text-dark">Método
+                                                de págo:</label>
+                                            <div class="input-group" style="height: 3rem;">
+                                                <span class="input-group-text"><i class="bi bi-wallet"
+                                                        style="color: blueviolet;"></i></span>
+                                                <select class="form-select" id="pago_ID" [(ngModel)]="MetedoPago">
+                                                    <option value="0">Selecciona una opción</option>
+                                                    <option value="1">Crédito</option>
+                                                    <option value="2">Contado</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6 col-sm-12">
+                                            <button class="ov-btn-grow-primary col-12 col-md-5 col-sm-12"
+                                                (click)="confirmarCompra()"
+                                                style="height: 2.6rem; margin-left: 0; margin-top: 2.2rem;">
+                                                <i class="fas fa-plus-circle mr-1"></i>
+                                                Confirmar compra
+                                            </button>
+                                            <button (click)="Volver()"
+                                                class="ov-btn-grow-d col-12 col-md-6 col-sm-12 ms-1"
+                                                style="height: 2.6rem; margin-left: 0; margin-top: 2.2rem;">
+                                                <i class="bi bi-reply-fill"></i>
+                                                Cancelar
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>

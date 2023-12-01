@@ -1,0 +1,14 @@
+
+
+.img-circle-medium {
+    width: 200px; /* Ajusta el tamaño del visualizador según tus necesidades */
+    height: 200px; /* Ajusta el tamaño del visualizador según tus necesidades */
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 2px #00000060;
+  }
+  
+  .point:hover {
+    cursor: pointer;
+  }
